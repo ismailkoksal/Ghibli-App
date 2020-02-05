@@ -7,14 +7,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Film} from '../Models/Film';
+import {Film} from '../models/Film';
 import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
 
 export interface Props {
-  navigation: NavigationStackProp<{filmId: string}>;
+  navigation: NavigationStackProp;
 }
 
 interface State {

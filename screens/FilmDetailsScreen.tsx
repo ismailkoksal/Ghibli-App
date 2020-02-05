@@ -1,6 +1,6 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import {Film} from '../Models/Film';
+import {Film} from '../models/Film';
 import {
   NavigationStackOptions,
   NavigationStackProp,
