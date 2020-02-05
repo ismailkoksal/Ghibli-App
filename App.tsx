@@ -10,6 +10,7 @@ import LocationsScreen from './screens/LocationsScreen';
 import LocationDetailsScreen from './screens/LocationDetailsScreen';
 import SpeciesScreen from './screens/SpeciesScreen';
 import VehiclesScreen from './screens/VehiclesScreen';
+import PeopleDetails from './screens/PeopleDetailsScreen';
 
 const MainNavigator = createStackNavigator(
   {
@@ -17,6 +18,7 @@ const MainNavigator = createStackNavigator(
     Films: {screen: FilmsScreen},
     FilmDetails: {screen: FilmDetailsScreen},
     People: {screen: PeopleScreen},
+    PeopleDetails: {screen: PeopleDetails},
     Locations: {screen: LocationsScreen},
     LocationDetails: {screen: LocationDetailsScreen},
     Species: {screen: SpeciesScreen},
