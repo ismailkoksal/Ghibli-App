@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Film} from '../Film';
+import {Film} from '../Models/Film';
 import {
   NavigationStackOptions,
   NavigationStackProp,
