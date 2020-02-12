@@ -3,8 +3,9 @@ import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
-import {People} from '../models/People';
+import {People} from '../../models/People';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {PeopleDao} from '../../services/peopleDao';
 
 export interface Props {
   navigation: NavigationStackProp<{peopleId: string}>;
@@ -13,10 +14,6 @@ export interface Props {
 interface State {
   isLoading: boolean;
   people?: People;
-}
-
-function getPeopleDetailFromApiAsync(peopleId: string) {
-  return fetch(`https://ghibliapi.herokuapp.com/people/${peopleId}`);
 }
 
 export default class PeopleDetails extends React.Component<Props, State> {
@@ -32,12 +29,11 @@ export default class PeopleDetails extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    getPeopleDetailFromApiAsync(this.props.navigation.getParam('peopleId'))
-      .then(response => response.json())
-      .then(responseJson => {
+    PeopleDao.getPeopleById(this.props.navigation.getParam('peopleId'))
+      .then(people => {
         this.setState({
           isLoading: false,
-          people: responseJson,
+          people,
         });
       })
       .catch(error => console.error(error));

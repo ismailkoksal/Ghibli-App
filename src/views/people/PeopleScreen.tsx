@@ -8,7 +8,8 @@ import {
   View,
 } from 'react-native';
 import {NavigationStackProp} from 'react-navigation-stack';
-import {People} from '../models/People';
+import {People} from '../../models/People';
+import {PeopleDao} from '../../services/peopleDao';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -16,11 +17,7 @@ export interface Props {
 
 interface State {
   isLoading: boolean;
-  dataSource: People[];
-}
-
-function getPeopleFromApiAsync() {
-  return fetch('https://ghibliapi.herokuapp.com/people');
+  people: People[];
 }
 
 function RenderButton({title, onPress}) {
@@ -40,17 +37,16 @@ export default class PeopleScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       isLoading: true,
-      dataSource: [],
+      people: [],
     };
   }
 
   componentDidMount(): void {
-    getPeopleFromApiAsync()
-      .then(response => response.json())
-      .then(responseJson => {
+    PeopleDao.getAllPeople()
+      .then(people => {
         this.setState({
           isLoading: false,
-          dataSource: responseJson,
+          people,
         });
       })
       .catch(error => console.error(error));
@@ -69,7 +65,7 @@ export default class PeopleScreen extends React.Component<Props, State> {
     return (
       <View>
         <FlatList
-          data={this.state.dataSource}
+          data={this.state.people}
           renderItem={({item}) => (
             <RenderButton
               title={item.name}
