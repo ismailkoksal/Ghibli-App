@@ -3,14 +3,16 @@ import {createStackNavigator} from 'react-navigation-stack';
 import 'react-native-gesture-handler';
 
 import HomeScreen from './src/views/HomeScreen';
-import FilmsScreen from './src/views/FilmsScreen';
-import FilmDetailsScreen from './src/views/FilmDetailsScreen';
-import PeopleScreen from './src/views/PeopleScreen';
-import LocationsScreen from './src/views/LocationsScreen';
-import LocationDetailsScreen from './src/views/LocationDetailsScreen';
-import SpeciesScreen from './src/views/SpeciesScreen';
-import VehiclesScreen from './src/views/VehiclesScreen';
-import PeopleDetails from './src/views/PeopleDetailsScreen';
+import FilmsScreen from './src/views/film/FilmsScreen';
+import FilmDetailsScreen from './src/views/film/FilmDetailsScreen';
+import PeopleScreen from './src/views/people/PeopleScreen';
+import LocationsScreen from './src/views/location/LocationsScreen';
+import LocationDetailsScreen from './src/views/location/LocationDetailsScreen';
+import SpeciesScreen from './src/views/species/SpeciesScreen';
+import VehiclesScreen from './src/views/vehicle/VehiclesScreen';
+import PeopleDetails from './src/views/people/PeopleDetailsScreen';
+import VehicleDetailsScreen from './src/views/vehicle/VehicleDetailsScreen';
+import SpeciesDetailsScreen from './src/views/species/SpeciesDetailsScreen';
 
 const MainNavigator = createStackNavigator(
   {
@@ -22,7 +24,9 @@ const MainNavigator = createStackNavigator(
     Locations: {screen: LocationsScreen},
     LocationDetails: {screen: LocationDetailsScreen},
     Species: {screen: SpeciesScreen},
+    SpeciesDetails: {screen: SpeciesDetailsScreen},
     Vehicles: {screen: VehiclesScreen},
+    VehicleDetails: {screen: VehicleDetailsScreen},
   },
   {initialRouteName: 'Home'},
 );
