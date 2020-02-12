@@ -12,7 +12,7 @@ export interface Props {
 export interface State {
   isLoading: boolean;
   locations: Location[];
-  terrain: string;
+  selectedTerrain: string;
 }
 
 export default class LocationsScreen extends React.Component<Props, State> {
@@ -25,17 +25,8 @@ export default class LocationsScreen extends React.Component<Props, State> {
     this.state = {
       isLoading: true,
       locations: [],
-      terrain: 'None',
+      selectedTerrain: 'None',
     };
-  }
-
-  getLocations(): Location[] {
-    if (this.state.terrain !== 'None') {
-      return this.state.locations.filter(
-        location => location.terrain === this.state.terrain,
-      );
-    }
-    return this.state.locations;
   }
 
   componentDidMount(): void {
@@ -45,6 +36,19 @@ export default class LocationsScreen extends React.Component<Props, State> {
         locations,
       });
     });
+  }
+
+  getAllLocations(): Location[] {
+    if (this.state.selectedTerrain !== 'None') {
+      return this.state.locations.filter(
+        location => location.terrain === this.state.selectedTerrain,
+      );
+    }
+    return this.state.locations;
+  }
+
+  getAllTerrains(): string[] {
+    return [...new Set(this.state.locations.map(location => location.terrain))];
   }
 
   render() {
@@ -60,21 +64,17 @@ export default class LocationsScreen extends React.Component<Props, State> {
     return (
       <View>
         <Picker
-          selectedValue={this.state.terrain}
-          onValueChange={itemValue => this.setState({terrain: itemValue})}>
-          <Picker.Item label="None" value="None" />
-          <Picker.Item label="Mountain" value="Mountain" />
-          <Picker.Item label="Hill" value="Hill" />
-          <Picker.Item label="Plain" value="Plain" />
-          <Picker.Item label="Marsh" value="Marsh" />
-          <Picker.Item label="TODO" value="TODO" />
-          <Picker.Item label="Forest" value="Forest" />
-          <Picker.Item label="City" value="City" />
-          <Picker.Item label="River" value="River" />
-          <Picker.Item label="Ocean" value="Ocean" />
+          selectedValue={this.state.selectedTerrain}
+          onValueChange={itemValue =>
+            this.setState({selectedTerrain: itemValue})
+          }>
+          <Picker.Item key="None" label="None" value="None" />
+          {this.getAllTerrains().map(terrain => (
+            <Picker.Item key={terrain} label={terrain} value={terrain} />
+          ))}
         </Picker>
         <FlatList
-          data={this.getLocations()}
+          data={this.getAllLocations()}
           renderItem={({item}) => (
             <Button
               title={item.name}
