@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  Picker,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ActivityIndicator, FlatList, Picker, View} from 'react-native';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {Location} from '../../models/Location';
 import {LocationDao} from '../../services/locationDao';
+import {Button} from '../../components/Button';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -20,14 +13,6 @@ export interface State {
   isLoading: boolean;
   locations: Location[];
   terrain: string;
-}
-
-function RenderButton({title, onPress}) {
-  return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
-    </TouchableOpacity>
-  );
 }
 
 export default class LocationsScreen extends React.Component<Props, State> {
@@ -91,7 +76,7 @@ export default class LocationsScreen extends React.Component<Props, State> {
         <FlatList
           data={this.getLocations()}
           renderItem={({item}) => (
-            <RenderButton
+            <Button
               title={item.name}
               onPress={() => navigate('LocationDetails', {locationId: item.id})}
             />
@@ -102,15 +87,3 @@ export default class LocationsScreen extends React.Component<Props, State> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    maxHeight: 48,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  text: {
-    fontSize: 16,
-    color: '#000000de',
-  },
-});

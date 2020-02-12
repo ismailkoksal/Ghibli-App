@@ -1,15 +1,9 @@
 import React from 'react';
-import {
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ActivityIndicator, FlatList, View} from 'react-native';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {People} from '../../models/People';
 import {PeopleDao} from '../../services/peopleDao';
+import {Button} from '../../components/Button';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -18,14 +12,6 @@ export interface Props {
 interface State {
   isLoading: boolean;
   people: People[];
-}
-
-function RenderButton({title, onPress}) {
-  return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
-      <Text style={styles.text}>{title}</Text>
-    </TouchableOpacity>
-  );
 }
 
 export default class PeopleScreen extends React.Component<Props, State> {
@@ -67,7 +53,7 @@ export default class PeopleScreen extends React.Component<Props, State> {
         <FlatList
           data={this.state.people}
           renderItem={({item}) => (
-            <RenderButton
+            <Button
               title={item.name}
               onPress={() => navigate('PeopleDetails', {peopleId: item.id})}
             />
@@ -77,15 +63,3 @@ export default class PeopleScreen extends React.Component<Props, State> {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    maxHeight: 48,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-  },
-  text: {
-    fontSize: 16,
-    color: '#000000de',
-  },
-});
