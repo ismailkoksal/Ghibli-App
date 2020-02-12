@@ -5,6 +5,7 @@ import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
+import {FilmDao} from '../services/filmDao';
 
 export interface Props {
   navigation: NavigationStackProp<{filmId: string}>;
@@ -13,10 +14,6 @@ export interface Props {
 interface State {
   isLoading: boolean;
   film?: Film;
-}
-
-function getFilmDetailFromApiAsync(filmId: string) {
-  return fetch(`https://ghibliapi.herokuapp.com/films/${filmId}`);
 }
 
 export default class FilmDetailsScreen extends React.Component<Props, State> {
@@ -32,15 +29,14 @@ export default class FilmDetailsScreen extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    getFilmDetailFromApiAsync(this.props.navigation.getParam('filmId'))
-      .then(response => response.json())
-      .then(responseJson => {
+    FilmDao.getFilmById(this.props.navigation.getParam('filmId'))
+      .then((film: Film) => {
         this.setState({
           isLoading: false,
-          film: responseJson,
+          film: film,
         });
       })
-      .catch(error => console.error(error));
+      .catch((error: Error) => console.error(error));
   }
 
   render() {

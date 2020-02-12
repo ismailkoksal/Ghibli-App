@@ -2,15 +2,15 @@ import {createAppContainer} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import 'react-native-gesture-handler';
 
-import HomeScreen from './screens/HomeScreen';
-import FilmsScreen from './screens/FilmsScreen';
-import FilmDetailsScreen from './screens/FilmDetailsScreen';
-import PeopleScreen from './screens/PeopleScreen';
-import LocationsScreen from './screens/LocationsScreen';
-import LocationDetailsScreen from './screens/LocationDetailsScreen';
-import SpeciesScreen from './screens/SpeciesScreen';
-import VehiclesScreen from './screens/VehiclesScreen';
-import PeopleDetails from './screens/PeopleDetailsScreen';
+import HomeScreen from './src/views/HomeScreen';
+import FilmsScreen from './src/views/FilmsScreen';
+import FilmDetailsScreen from './src/views/FilmDetailsScreen';
+import PeopleScreen from './src/views/PeopleScreen';
+import LocationsScreen from './src/views/LocationsScreen';
+import LocationDetailsScreen from './src/views/LocationDetailsScreen';
+import SpeciesScreen from './src/views/SpeciesScreen';
+import VehiclesScreen from './src/views/VehiclesScreen';
+import PeopleDetails from './src/views/PeopleDetailsScreen';
 
 const MainNavigator = createStackNavigator(
   {

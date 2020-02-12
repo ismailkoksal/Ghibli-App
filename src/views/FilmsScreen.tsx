@@ -12,6 +12,7 @@ import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
+import {FilmDao} from '../services/filmDao';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -20,10 +21,6 @@ export interface Props {
 interface State {
   isLoading: boolean;
   dataSource: Film[];
-}
-
-function getFilmsFromApiAsync() {
-  return fetch('https://ghibliapi.herokuapp.com/films');
 }
 
 function RenderButton({title, onPress}) {
@@ -48,15 +45,14 @@ export default class FilmsScreen extends React.Component<Props, State> {
   }
 
   componentDidMount(): void {
-    getFilmsFromApiAsync()
-      .then(response => response.json())
-      .then(responseJson => {
+    FilmDao.getAllFilms()
+      .then((films: Film[]) => {
         this.setState({
           isLoading: false,
-          dataSource: responseJson,
+          dataSource: films,
         });
       })
-      .catch(error => console.error(error));
+      .catch((error: Error) => console.error(error));
   }
 
   render() {

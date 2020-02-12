@@ -2,6 +2,8 @@ import React from 'react';
 import {
   ActivityIndicator,
   FlatList,
+  Picker,
+  PickerItem,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -17,6 +19,7 @@ export interface Props {
 export interface State {
   isLoading: boolean;
   dataSource: Location[];
+  terrain: string;
 }
 
 function getLocationsFromApiAsync() {
@@ -41,7 +44,17 @@ export default class LocationsScreen extends React.Component<Props, State> {
     this.state = {
       isLoading: true,
       dataSource: [],
+      terrain: 'None',
     };
+  }
+
+  getLocations(): Location[] {
+    if (this.state.terrain !== 'None') {
+      return this.state.dataSource.filter(
+        location => location.terrain === this.state.terrain,
+      );
+    }
+    return this.state.dataSource;
   }
 
   componentDidMount(): void {
@@ -67,8 +80,22 @@ export default class LocationsScreen extends React.Component<Props, State> {
 
     return (
       <View>
+        <Picker
+          selectedValue={this.state.terrain}
+          onValueChange={itemValue => this.setState({terrain: itemValue})}>
+          <Picker.Item label="None" value="None" />
+          <Picker.Item label="Mountain" value="Mountain" />
+          <Picker.Item label="Hill" value="Hill" />
+          <Picker.Item label="Plain" value="Plain" />
+          <Picker.Item label="Marsh" value="Marsh" />
+          <Picker.Item label="TODO" value="TODO" />
+          <Picker.Item label="Forest" value="Forest" />
+          <Picker.Item label="City" value="City" />
+          <Picker.Item label="River" value="River" />
+          <Picker.Item label="Ocean" value="Ocean" />
+        </Picker>
         <FlatList
-          data={this.state.dataSource}
+          data={this.getLocations()}
           renderItem={({item}) => (
             <RenderButton
               title={item.name}
