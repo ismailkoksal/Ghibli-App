@@ -3,14 +3,14 @@ import {
   ActivityIndicator,
   FlatList,
   Picker,
-  PickerItem,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {NavigationStackProp} from 'react-navigation-stack';
-import {Location} from '../models/Location';
+import {Location} from '../../models/Location';
+import {LocationDao} from '../../services/locationDao';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -18,12 +18,8 @@ export interface Props {
 
 export interface State {
   isLoading: boolean;
-  dataSource: Location[];
+  locations: Location[];
   terrain: string;
-}
-
-function getLocationsFromApiAsync() {
-  return fetch('https://ghibliapi.herokuapp.com/locations');
 }
 
 function RenderButton({title, onPress}) {
@@ -43,29 +39,27 @@ export default class LocationsScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       isLoading: true,
-      dataSource: [],
+      locations: [],
       terrain: 'None',
     };
   }
 
   getLocations(): Location[] {
     if (this.state.terrain !== 'None') {
-      return this.state.dataSource.filter(
+      return this.state.locations.filter(
         location => location.terrain === this.state.terrain,
       );
     }
-    return this.state.dataSource;
+    return this.state.locations;
   }
 
   componentDidMount(): void {
-    getLocationsFromApiAsync()
-      .then(response => response.json())
-      .then(responseJson => {
-        this.setState({
-          isLoading: false,
-          dataSource: responseJson,
-        });
+    LocationDao.getAllLocations().then(locations => {
+      this.setState({
+        isLoading: false,
+        locations,
       });
+    });
   }
 
   render() {
