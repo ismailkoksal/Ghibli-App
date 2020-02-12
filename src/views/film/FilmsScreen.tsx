@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {Film} from '../models/Film';
+import {Film} from '../../models/Film';
 import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
-import {FilmDao} from '../services/filmDao';
+import {FilmDao} from '../../services/filmDao';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -20,7 +20,7 @@ export interface Props {
 
 interface State {
   isLoading: boolean;
-  dataSource: Film[];
+  films: Film[];
 }
 
 function RenderButton({title, onPress}) {
@@ -40,19 +40,19 @@ export default class FilmsScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       isLoading: true,
-      dataSource: [],
+      films: [],
     };
   }
 
   componentDidMount(): void {
     FilmDao.getAllFilms()
-      .then((films: Film[]) => {
+      .then(films => {
         this.setState({
           isLoading: false,
-          dataSource: films,
+          films,
         });
       })
-      .catch((error: Error) => console.error(error));
+      .catch(error => console.error(error));
   }
 
   render() {
@@ -68,7 +68,7 @@ export default class FilmsScreen extends React.Component<Props, State> {
     return (
       <View>
         <FlatList
-          data={this.state.dataSource}
+          data={this.state.films}
           renderItem={({item}) => (
             <RenderButton
               title={item.title}

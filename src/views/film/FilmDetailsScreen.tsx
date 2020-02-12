@@ -1,11 +1,11 @@
 import React from 'react';
 import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
-import {Film} from '../models/Film';
+import {Film} from '../../models/Film';
 import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
-import {FilmDao} from '../services/filmDao';
+import {FilmDao} from '../../services/filmDao';
 
 export interface Props {
   navigation: NavigationStackProp<{filmId: string}>;
@@ -30,13 +30,13 @@ export default class FilmDetailsScreen extends React.Component<Props, State> {
 
   componentDidMount(): void {
     FilmDao.getFilmById(this.props.navigation.getParam('filmId'))
-      .then((film: Film) => {
+      .then(film => {
         this.setState({
           isLoading: false,
-          film: film,
+          film,
         });
       })
-      .catch((error: Error) => console.error(error));
+      .catch(error => console.error(error));
   }
 
   render() {
