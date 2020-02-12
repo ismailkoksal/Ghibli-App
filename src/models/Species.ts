@@ -1,4 +1,4 @@
-export interface Specie {
+export interface Species {
   id: string;
   name: string;
   classification: string;
