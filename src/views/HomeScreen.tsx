@@ -23,6 +23,7 @@ export default class HomeScreen extends React.Component<Props, any> {
     return (
       <View>
         <Button title="Films" onPress={() => navigate('Films')} />
+        <Button title="Films à voir" onPress={() => navigate('MustSeeFilms')} />
         <Button title="People" onPress={() => navigate('People')} />
         <Button title="Locations" onPress={() => navigate('Locations')} />
         <Button title="Species" onPress={() => navigate('Species')} />
