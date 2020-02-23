@@ -16,7 +16,11 @@ export function filmReducer(
   switch (action.type) {
     case ADD_FILM:
       return {
-        mustSeeFilms: [...state.mustSeeFilms, action.payload],
+        mustSeeFilms: state.mustSeeFilms.find(
+          film => film.id === action.payload.id,
+        )
+          ? [...state.mustSeeFilms]
+          : [...state.mustSeeFilms, action.payload],
       };
     case DELETE_FILM:
       return {
