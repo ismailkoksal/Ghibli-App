@@ -19,4 +19,8 @@ export class FilmDao {
       response.json(),
     );
   }
+
+  static getFilmByUrl(url: string): Promise<Film> {
+    return fetch(url).then(response => response.json());
+  }
 }
