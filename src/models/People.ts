@@ -3,8 +3,8 @@ export interface People {
   name: string;
   gender: Gender;
   age: string;
-  eyeColor: string;
-  hairColor: string;
+  eye_color: string;
+  hair_color: string;
   films: string[];
   species: string;
   url: string;

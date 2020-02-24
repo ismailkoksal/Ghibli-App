@@ -14,16 +14,17 @@ import PeopleDetails from './src/views/people/PeopleDetailsScreen';
 import VehicleDetailsScreen from './src/views/vehicle/VehicleDetailsScreen';
 import SpeciesDetailsScreen from './src/views/species/SpeciesDetailsScreen';
 import React from 'react';
-import {Provider} from 'react-redux';
 import Store from './src/store/initStore';
 import MustSeeFilmsScreen from './src/views/film/MustSeeFilmsScreen';
+import {createMaterialBottomTabNavigator} from 'react-navigation-material-bottom-tabs';
+import {Provider as StoreProvider} from 'react-redux';
+import {Provider as PaperProvider} from 'react-native-paper';
 
-const MainNavigator = createStackNavigator(
+const MainStack = createStackNavigator(
   {
     Home: {screen: HomeScreen},
     Films: {screen: FilmsScreen},
     FilmDetails: {screen: FilmDetailsScreen},
-    MustSeeFilms: {screen: MustSeeFilmsScreen},
     People: {screen: PeopleScreen},
     PeopleDetails: {screen: PeopleDetails},
     Locations: {screen: LocationsScreen},
@@ -36,14 +37,26 @@ const MainNavigator = createStackNavigator(
   {initialRouteName: 'Home'},
 );
 
-const Navigation = createAppContainer(MainNavigator);
+const Tab = createMaterialBottomTabNavigator({
+  Home: {screen: MainStack, navigationOptions: {tabBarLabel: 'Home'}},
+  MustSeeFilms: {
+    screen: MustSeeFilmsScreen,
+    navigationOptions: {
+      tabBarLabel: 'Must see films',
+    },
+  },
+});
+
+const Navigation = createAppContainer(Tab);
 
 export default class App extends React.Component<any, any> {
   render() {
     return (
-      <Provider store={Store}>
-        <Navigation />
-      </Provider>
+      <StoreProvider store={Store}>
+        <PaperProvider>
+          <Navigation />
+        </PaperProvider>
+      </StoreProvider>
     );
   }
 }

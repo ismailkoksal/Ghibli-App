@@ -3,13 +3,14 @@ import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
-import {Button, View} from 'react-native';
+import {View} from 'react-native';
+import {Button} from 'react-native-paper';
 
 export interface Props {
   navigation: NavigationStackProp;
 }
 
-export default class HomeScreen extends React.Component<Props, any> {
+export default class HomeScreen extends React.Component<Props> {
   static navigationOptions: NavigationStackOptions = {
     title: 'Home',
   };
@@ -21,13 +22,12 @@ export default class HomeScreen extends React.Component<Props, any> {
   render() {
     const {navigate} = this.props.navigation;
     return (
-      <View>
-        <Button title="Films" onPress={() => navigate('Films')} />
-        <Button title="Films à voir" onPress={() => navigate('MustSeeFilms')} />
-        <Button title="People" onPress={() => navigate('People')} />
-        <Button title="Locations" onPress={() => navigate('Locations')} />
-        <Button title="Species" onPress={() => navigate('Species')} />
-        <Button title="Vehicles" onPress={() => navigate('Vehicles')} />
+      <View style={{display: 'flex', flex: 1, justifyContent: 'center'}}>
+        <Button onPress={() => navigate('Films')}>Films</Button>
+        <Button onPress={() => navigate('People')}>People</Button>
+        <Button onPress={() => navigate('Locations')}>Locations</Button>
+        <Button onPress={() => navigate('Species')}>Species</Button>
+        <Button onPress={() => navigate('Vehicles')}>Vehicles</Button>
       </View>
     );
   }

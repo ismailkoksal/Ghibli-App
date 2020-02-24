@@ -1,11 +1,13 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
 import {Species} from '../../models/Species';
 import {SpeciesDao} from '../../services/speciesDao';
+import {Card, DataTable} from 'react-native-paper';
+import MyActivityIndicator from '../../components/MyActivityIndicator';
 
 export interface Props {
   navigation: NavigationStackProp<{speciesId: string}>;
@@ -44,33 +46,38 @@ export default class SpeciesDetailsScreen extends React.Component<
 
   render() {
     if (this.state.isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
+      return <MyActivityIndicator />;
     }
 
     if (this.state.species) {
       const species: Species = this.state.species;
       return (
-        <View>
-          <Text style={styles.title}>{species.name}</Text>
-          <Text>{species.classification}</Text>
-          <Text>{species.hairColors}</Text>
-        </View>
+        <ScrollView>
+          <Card>
+            <Card.Title title={species.name} />
+            <Card.Content>
+              <DataTable>
+                <DataTable.Row>
+                  <DataTable.Cell>Classification</DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    {species.classification}
+                  </DataTable.Cell>
+                </DataTable.Row>
+
+                <DataTable.Row>
+                  <DataTable.Cell>Eye color</DataTable.Cell>
+                  <DataTable.Cell numeric>{species.eye_colors}</DataTable.Cell>
+                </DataTable.Row>
+
+                <DataTable.Row>
+                  <DataTable.Cell>Hair color</DataTable.Cell>
+                  <DataTable.Cell numeric>{species.hair_colors}</DataTable.Cell>
+                </DataTable.Row>
+              </DataTable>
+            </Card.Content>
+          </Card>
+        </ScrollView>
       );
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingVertical: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});

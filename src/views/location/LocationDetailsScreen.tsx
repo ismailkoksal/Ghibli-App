@@ -4,8 +4,10 @@ import {
   NavigationStackProp,
 } from 'react-navigation-stack';
 import {Location} from '../../models/Location';
-import {ActivityIndicator, Text, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {LocationDao} from '../../services/locationDao';
+import {Card, DataTable} from 'react-native-paper';
+import MyActivityIndicator from '../../components/MyActivityIndicator';
 
 export interface Props {
   navigation: NavigationStackProp<{locationId: string}>;
@@ -44,19 +46,37 @@ export default class LocationDetailsScreen extends React.Component<
 
   render() {
     if (this.state.isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
+      return <MyActivityIndicator />;
     }
 
     if (this.state.location) {
       const location: Location = this.state.location;
       return (
-        <View>
-          <Text>{location.name}</Text>
-        </View>
+        <ScrollView>
+          <Card>
+            <Card.Title title={location.name} />
+            <Card.Content>
+              <DataTable>
+                <DataTable.Row>
+                  <DataTable.Cell>Climate</DataTable.Cell>
+                  <DataTable.Cell numeric>{location.climate}</DataTable.Cell>
+                </DataTable.Row>
+
+                <DataTable.Row>
+                  <DataTable.Cell>Terrain</DataTable.Cell>
+                  <DataTable.Cell numeric>{location.terrain}</DataTable.Cell>
+                </DataTable.Row>
+
+                <DataTable.Row>
+                  <DataTable.Cell>Water surface</DataTable.Cell>
+                  <DataTable.Cell numeric>
+                    {location.surface_water}
+                  </DataTable.Cell>
+                </DataTable.Row>
+              </DataTable>
+            </Card.Content>
+          </Card>
+        </ScrollView>
       );
     }
   }

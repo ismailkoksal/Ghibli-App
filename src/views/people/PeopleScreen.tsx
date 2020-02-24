@@ -1,9 +1,10 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {People} from '../../models/People';
 import {PeopleDao} from '../../services/peopleDao';
-import {Button} from '../../components/Button';
+import {List} from 'react-native-paper';
+import MyActivityIndicator from '../../components/MyActivityIndicator';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -41,25 +42,21 @@ export default class PeopleScreen extends React.Component<Props, State> {
   render() {
     const {navigate} = this.props.navigation;
     if (this.state.isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
+      return <MyActivityIndicator />;
     }
 
     return (
-      <View>
-        <FlatList
-          data={this.state.people}
-          renderItem={({item}) => (
-            <Button
-              title={item.name}
-              onPress={() => navigate('PeopleDetails', {peopleId: item.id})}
-            />
-          )}
-        />
-      </View>
+      <ScrollView>
+        {this.state.people.map(people => (
+          <List.Item
+            title={people.name}
+            key={people.id}
+            onPress={() => {
+              navigate('PeopleDetails', {peopleId: people.id});
+            }}
+          />
+        ))}
+      </ScrollView>
     );
   }
 }

@@ -1,9 +1,10 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, Picker, View} from 'react-native';
+import {Picker, ScrollView, View} from 'react-native';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {Location} from '../../models/Location';
 import {LocationDao} from '../../services/locationDao';
-import {Button} from '../../components/Button';
+import {List} from 'react-native-paper';
+import MyActivityIndicator from '../../components/MyActivityIndicator';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -54,11 +55,7 @@ export default class LocationsScreen extends React.Component<Props, State> {
   render() {
     const {navigate} = this.props.navigation;
     if (this.state.isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
+      return <MyActivityIndicator />;
     }
 
     return (
@@ -73,16 +70,17 @@ export default class LocationsScreen extends React.Component<Props, State> {
             <Picker.Item key={terrain} label={terrain} value={terrain} />
           ))}
         </Picker>
-        <FlatList
-          data={this.getAllLocations()}
-          renderItem={({item}) => (
-            <Button
-              title={item.name}
-              onPress={() => navigate('LocationDetails', {locationId: item.id})}
+        <ScrollView>
+          {this.getAllLocations().map(location => (
+            <List.Item
+              title={location.name}
+              key={location.id}
+              onPress={() => {
+                navigate('LocationDetails', {locationId: location.id});
+              }}
             />
-          )}
-          keyExtractor={item => item.id}
-        />
+          ))}
+        </ScrollView>
       </View>
     );
   }

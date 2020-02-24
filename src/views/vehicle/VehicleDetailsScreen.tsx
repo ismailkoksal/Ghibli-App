@@ -1,11 +1,13 @@
 import React from 'react';
-import {ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
 import {VehicleDao} from '../../services/vehicleDao';
 import {Vehicle} from '../../models/Vehicle';
+import {Card, DataTable, Paragraph} from 'react-native-paper';
+import MyActivityIndicator from '../../components/MyActivityIndicator';
 
 export interface Props {
   navigation: NavigationStackProp<{vehicleId: string}>;
@@ -44,33 +46,32 @@ export default class VehicleDetailsScreen extends React.Component<
 
   render() {
     if (this.state.isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
+      return <MyActivityIndicator />;
     }
 
     if (this.state.vehicle) {
       const vehicle: Vehicle = this.state.vehicle;
       return (
-        <View>
-          <Text style={styles.title}>{vehicle.name}</Text>
-          <Text>{vehicle.description}</Text>
-          <Text>{vehicle.pilot}</Text>
-        </View>
+        <ScrollView>
+          <Card>
+            <Card.Title title={vehicle.name} />
+            <Card.Content>
+              <Paragraph>{vehicle.description}</Paragraph>
+              <DataTable>
+                <DataTable.Row>
+                  <DataTable.Cell>Class</DataTable.Cell>
+                  <DataTable.Cell>{vehicle.vehicle_class}</DataTable.Cell>
+                </DataTable.Row>
+
+                <DataTable.Row>
+                  <DataTable.Cell>Length</DataTable.Cell>
+                  <DataTable.Cell>{vehicle.length}</DataTable.Cell>
+                </DataTable.Row>
+              </DataTable>
+            </Card.Content>
+          </Card>
+        </ScrollView>
       );
     }
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    paddingVertical: 16,
-  },
-  title: {
-    fontSize: 32,
-  },
-});

@@ -2,8 +2,8 @@ export interface Species {
   id: string;
   name: string;
   classification: string;
-  eyeColors: string;
-  hairColors: string;
+  eye_colors: string;
+  hair_colors: string;
   people: string[];
   films: string[];
   url: string;

@@ -1,12 +1,13 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {Film} from '../../models/Film';
 import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
 import {FilmDao} from '../../services/filmDao';
-import {Button} from '../../components/Button';
+import {List} from 'react-native-paper';
+import MyActivityIndicator from '../../components/MyActivityIndicator';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -44,26 +45,21 @@ export default class FilmsScreen extends React.Component<Props, State> {
   render() {
     const {navigate} = this.props.navigation;
     if (this.state.isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
+      return <MyActivityIndicator />;
     }
 
     return (
-      <View>
-        <FlatList
-          data={this.state.films}
-          renderItem={({item}) => (
-            <Button
-              title={item.title}
-              onPress={() => navigate('FilmDetails', {filmId: item.id})}
-            />
-          )}
-          keyExtractor={item => item.id}
-        />
-      </View>
+      <ScrollView>
+        {this.state.films.map(film => (
+          <List.Item
+            title={film.title}
+            key={film.id}
+            onPress={() => {
+              navigate('FilmDetails', {filmId: film.id});
+            }}
+          />
+        ))}
+      </ScrollView>
     );
   }
 }

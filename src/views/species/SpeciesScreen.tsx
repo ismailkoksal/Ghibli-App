@@ -1,9 +1,10 @@
 import React from 'react';
-import {ActivityIndicator, FlatList, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import {NavigationStackProp} from 'react-navigation-stack';
 import {Species} from '../../models/Species';
 import {SpeciesDao} from '../../services/speciesDao';
-import {Button} from '../../components/Button';
+import {List} from 'react-native-paper';
+import MyActivityIndicator from '../../components/MyActivityIndicator';
 
 export interface Props {
   navigation: NavigationStackProp;
@@ -41,26 +42,21 @@ export default class SpeciesScreen extends React.Component<Props, State> {
   render() {
     const {navigate} = this.props.navigation;
     if (this.state.isLoading) {
-      return (
-        <View>
-          <ActivityIndicator />
-        </View>
-      );
+      return <MyActivityIndicator />;
     }
 
     return (
-      <View>
-        <FlatList
-          data={this.state.species}
-          renderItem={({item}) => (
-            <Button
-              title={item.name}
-              onPress={() => navigate('SpeciesDetails', {speciesId: item.id})}
-            />
-          )}
-          keyExtractor={item => item.id}
-        />
-      </View>
+      <ScrollView>
+        {this.state.species.map(species => (
+          <List.Item
+            title={species.name}
+            key={species.id}
+            onPress={() => {
+              navigate('SpeciesDetails', {speciesId: species.id});
+            }}
+          />
+        ))}
+      </ScrollView>
     );
   }
 }

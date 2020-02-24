@@ -3,7 +3,7 @@ export interface Location {
   name: string;
   climate: string;
   terrain: string;
-  surfaceWater: string;
+  surface_water: string;
   residents: string[];
   films: string[];
   url: string[];
