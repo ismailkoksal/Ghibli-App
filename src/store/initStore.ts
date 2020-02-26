@@ -1,4 +1,12 @@
-import {createStore} from 'redux';
+import {combineReducers, createStore} from 'redux';
 import {filmReducer} from './film/reducers';
+import {noteReducer} from './note/reducers';
 
-export default createStore(filmReducer);
+const rootReducer = combineReducers({
+  film: filmReducer,
+  note: noteReducer,
+});
+
+export type RootState = ReturnType<typeof rootReducer>;
+
+export default createStore(rootReducer);

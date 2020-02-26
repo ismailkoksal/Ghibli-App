@@ -1,13 +1,13 @@
 import React from 'react';
 import {NavigationStackProp} from 'react-navigation-stack';
-import {MustSeeFilmsState} from '../../store/film/types';
 import {connect, ConnectedProps} from 'react-redux';
 import {ScrollView, View} from 'react-native';
 import {deleteFilm} from '../../store/film/actions';
 import {Appbar, IconButton, List} from 'react-native-paper';
+import {RootState} from '../../store/initStore';
 
-const mapState = (state: MustSeeFilmsState) => ({
-  mustSeeFilms: state.mustSeeFilms,
+const mapState = (state: RootState) => ({
+  mustSeeFilms: state.film.mustSeeFilms,
 });
 
 const mapDispatch = {

@@ -1,24 +1,34 @@
 import React from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {ScrollView, StyleSheet, View} from 'react-native';
 import {Film} from '../../models/Film';
 import {
   NavigationStackOptions,
   NavigationStackProp,
 } from 'react-navigation-stack';
 import {FilmDao} from '../../services/filmDao';
-import {MustSeeFilmsState} from '../../store/film/types';
 import {connect, ConnectedProps} from 'react-redux';
 import {addFilm, deleteFilm} from '../../store/film/actions';
-import {Button, Card, DataTable, Paragraph} from 'react-native-paper';
+import {
+  Button,
+  Card,
+  DataTable,
+  Paragraph,
+  TextInput,
+} from 'react-native-paper';
 import MyActivityIndicator from '../../components/MyActivityIndicator';
+import {Note} from '../../store/note/types';
+import {addNote} from '../../store/note/actions';
+import {RootState} from '../../store/initStore';
 
-const mapState = (state: MustSeeFilmsState) => ({
-  mustSeeFilms: state.mustSeeFilms,
+const mapState = (state: RootState) => ({
+  mustSeeFilms: state.film.mustSeeFilms,
+  notes: state.note.notes,
 });
 
 const mapDispatch = {
   addFilm: (newFilm: Film) => addFilm(newFilm),
   deleteFilm: (idFilm: string) => deleteFilm(idFilm),
+  addNote: (newNote: Note) => addNote(newNote),
 };
 
 const connector = connect(
@@ -35,6 +45,8 @@ type Props = PropsFromRedux & {
 interface State {
   isLoading: boolean;
   film?: Film;
+  text: string;
+  note?: Note;
 }
 
 class FilmDetailsScreen extends React.Component<Props, State> {
@@ -46,11 +58,13 @@ class FilmDetailsScreen extends React.Component<Props, State> {
     super(props);
     this.state = {
       isLoading: true,
+      text: '',
     };
   }
 
   componentDidMount(): void {
-    FilmDao.getFilmById(this.props.navigation.getParam('filmId'))
+    const filmId: string = this.props.navigation.getParam('filmId');
+    FilmDao.getFilmById(filmId)
       .then(film => {
         this.setState({
           isLoading: false,
@@ -67,6 +81,9 @@ class FilmDetailsScreen extends React.Component<Props, State> {
 
     if (this.state.film) {
       const film: Film = this.state.film;
+      const note: Note | undefined = this.props.notes.find(
+        n => n.idFilm === film.id,
+      );
       return (
         <ScrollView>
           <Card style={{marginBottom: 10}}>
@@ -112,12 +129,34 @@ class FilmDetailsScreen extends React.Component<Props, State> {
 
           <Card>
             <Card.Title title={'Note'} />
-            <Card.Content>
-              <Paragraph>Ma note</Paragraph>
-            </Card.Content>
-            <Card.Actions>
-              <Button>Ajouter une note</Button>
-            </Card.Actions>
+            {note ? (
+              <Card.Content>
+                <Paragraph>{note.message}</Paragraph>
+              </Card.Content>
+            ) : (
+              <View>
+                <Card.Content>
+                  <TextInput
+                    mode="outlined"
+                    placeholder="Entrer une note"
+                    multiline
+                    value={this.state.text}
+                    onChangeText={text => this.setState({text})}
+                  />
+                </Card.Content>
+                <Card.Actions style={styles.actions}>
+                  <Button
+                    onPress={() => {
+                      this.props.addNote({
+                        idFilm: film.id,
+                        message: this.state.text,
+                      });
+                    }}>
+                    Ajouter une note
+                  </Button>
+                </Card.Actions>
+              </View>
+            )}
           </Card>
         </ScrollView>
       );
